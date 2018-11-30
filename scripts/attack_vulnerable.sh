@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -12,9 +11,10 @@ export KUBECONFIG=$(mktemp /tmp/kubeconfig.XXXXXX)
 
 gcloud container clusters get-credentials ${CLUSTER} --zone=${ZONE} --project=${PROJECT}
 
-cd ../screenshot
-make push
-cd ../manifests
-kubectl delete deployment screenshot || true
-kubectl delete deployment newnx || true
-kubectl apply -f screenshot.yaml
+# Port-forward signup pod to localhost:8080
+POD=$(kubectl get pods --selector=app=screenshot --output=jsonpath={.items..metadata.name})
+if [[ -z "${POD}" ]]; then
+  echo "screenshot pod not found. Is the deployment still creating?"
+  exit 1
+fi
+kubectl exec -it ${POD} -- /bin/bash
