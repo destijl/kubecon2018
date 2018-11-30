@@ -18,5 +18,6 @@ RUN apt-get update
 RUN apt-get install -y pv wget curl
 
 RUN wget -q https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh -O /demo-magic.sh
-ADD demo.sh /demo.sh
+ADD demo1.sh /demo1.sh
+ADD demo2.sh /demo2.sh
 CMD ["sleep", "9999999999"]

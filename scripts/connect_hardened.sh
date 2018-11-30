@@ -5,7 +5,7 @@ set -o pipefail
 
 : ${PROJECT:="gcastle-gke-dev"}
 : ${ZONE:="us-west1-b"}
-: ${CLUSTER:="kubecon2018"}
+: ${CLUSTER:="kubecon2018-hardened"}
 
 export KUBECONFIG=$(mktemp /tmp/kubeconfig.XXXXXX)
 
