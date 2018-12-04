@@ -18,3 +18,12 @@ spec:
             cpu: 100m
             memory: 100Mi
         imagePullPolicy: Always
+# Dummy secret
+#---
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: payment-api-key
+#type: Opaque
+#data:
+#  apikey: MWYyZDFlMmU2N2Rm

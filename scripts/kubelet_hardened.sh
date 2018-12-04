@@ -13,7 +13,7 @@ set -o pipefail
 DEMOMAGIC="demo-magic.sh"
 
 if [ ! -f $DEMOMAGIC ]; then
-  wget -q https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
+  curl -OsS -L https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
 fi
 
 . demo-magic.sh -d
