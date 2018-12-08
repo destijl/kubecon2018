@@ -1,0 +1,9 @@
+source /Users/gcastle/.screenrc
+
+# When a process dies, if it was non-zero exit then keep the window until you
+# hit 'q', if you hit 'r', run the same command again.
+zombie qr
+
+screen -t screenshot_server ./connect_vuln.sh
+screen -t attacker ./kubelet_vulnerable.sh
+

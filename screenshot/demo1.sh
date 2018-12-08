@@ -2,7 +2,7 @@
 
 set -e
 
-. demo-magic.sh -d
+. demo-magic.sh
 clear
 
 p "# Try to get the token from the metadata API"

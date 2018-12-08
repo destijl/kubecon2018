@@ -70,9 +70,9 @@ endif
 
 push: .push-$(ARCH)
 .push-$(ARCH): .container-$(ARCH)
-	gcloud docker -- push $(MULTI_ARCH_IMG):$(TAG)
+	docker push $(MULTI_ARCH_IMG):$(TAG)
 ifeq ($(ARCH), amd64)
-	gcloud docker -- push $(IMAGE):$(TAG)
+	docker push $(IMAGE):$(TAG)
 endif
 
 clean: $(addprefix sub-clean-,$(ALL_ARCH))

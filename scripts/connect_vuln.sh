@@ -17,4 +17,4 @@ if [[ -z "${POD}" ]]; then
   echo "screenshot pod not found. Is the deployment still creating?"
   exit 1
 fi
-kubectl exec -it ${POD} -- /bin/bash
+kubectl exec -it ${POD} -- /bin/bash demo1.sh

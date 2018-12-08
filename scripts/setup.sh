@@ -34,4 +34,3 @@ kubectl delete deployment exchange || true
 kubectl apply -f screenshot.yaml
 kubectl create namespace exchange
 kubectl apply -n exchange -f exchange.yaml 
-
