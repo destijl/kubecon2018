@@ -63,3 +63,8 @@ kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_
 #p "kubectl auth can-i create certificatesigningrequests"
 #kubectl --client-certificate ../kubelet_keys/client.crt --client-key ../kubelet_keys/client.pem --certificate-authority ../kubelet_keys/ca.crt --server https://35.185.243.113 auth can-i create certificatesigningrequests
 
+echo ""
+echo ""
+echo ""
+p "${CYAN}# Back to slides"
+

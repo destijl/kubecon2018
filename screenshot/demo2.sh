@@ -24,4 +24,5 @@ wget --header="Metadata-Flavor: Google" http://metadata.google.internal/computeM
 echo ""
 echo ""
 echo ""
+p "${CYAN}# Switch to attacker machine"
 
